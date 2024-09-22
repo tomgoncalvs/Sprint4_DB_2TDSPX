@@ -22,7 +22,7 @@ def list_categorias():
 # Atualizar categoria
 def update_categoria(id):
     try:
-        _id = ObjectId(id)  # Certifique-se de usar o ObjectId correto
+        _id = ObjectId(id) 
         novo_nome = request.form['nome_categoria']
         nova_descricao = request.form['descricao']
 
@@ -36,19 +36,18 @@ def update_categoria(id):
     except Exception as e:
         flash(f'Erro ao atualizar a categoria: {str(e)}', 'danger')
 
-    # Corrige a chamada de redirecionamento para a rota correta
-    return redirect(url_for('categorias'))  # Certifique-se de que a rota correta seja 'categorias'
+    return redirect(url_for('categorias'))  
 
 
 # Deletar categoria
 def delete_categoria(id):
     try:
-        _id = ObjectId(id)  # Certifique-se de usar ObjectId corretamente
+        _id = ObjectId(id) 
         mongo.db.CATEGORIAS.delete_one({"_id": _id})
         flash('Categoria deletada com sucesso!', 'success')
     except Exception as e:
         flash(f'Erro ao deletar a categoria: {str(e)}', 'danger')
 
-    # Corrige a chamada de redirecionamento para a rota correta
-    return redirect(url_for('categorias'))  # Certifique-se de que a rota correta seja 'categorias'
+    
+    return redirect(url_for('categorias'))  
 

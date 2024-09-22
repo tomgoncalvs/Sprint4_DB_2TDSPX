@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, session, flash, url_for
-from functions.config import mongo, bcrypt  # Certifique-se de importar mongo corretamente
+from functions.config import mongo, bcrypt 
 
 def login_user():
     if request.method == 'POST':
@@ -15,7 +15,7 @@ def login_user():
         # Verificar se a senha está correta
         if bcrypt.check_password_hash(user['senha_hash'], senha):
             session['user_id'] = str(user['_id'])
-            session['user_role'] = user.get('role', 'user')  # Define o papel do usuário
+            session['user_role'] = user.get('role', 'user') 
             flash('Login realizado com sucesso!', 'success')
             return redirect(url_for('dashboard'))
         else:

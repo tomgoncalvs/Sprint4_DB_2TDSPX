@@ -4,7 +4,6 @@ from datetime import datetime
 from functions.config import mongo
 
 # Função para listar compras
-# Função para listar compras
 def listar_compras():
     compras = mongo.db.COMPRAS.find()
     compras_detalhadas = []
