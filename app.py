@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, session, flash, url_for
+from flask import Flask, request, render_template, redirect, session, flash, url_for, send_file
 from dotenv import load_dotenv
 from functions.config import mongo, bcrypt
 from functions.user.login import login_user
@@ -10,6 +10,9 @@ from functions.data.categorias import create_categoria, list_categorias, update_
 from functions.data.usuarios import create_usuario, list_usuarios, update_usuario, delete_usuario
 from bson import ObjectId, errors
 import os
+import io
+import csv
+import json
 from datetime import datetime
 
 # Carregar variáveis de ambiente do arquivo .env
@@ -22,6 +25,13 @@ app.secret_key = os.getenv('SECRET_KEY')
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 mongo.init_app(app)
 bcrypt.init_app(app)
+
+# Função para serializar datetime e ObjectId
+def json_serial(obj):
+    """Função para serializar objetos que não podem ser serializados por padrão pelo json.dumps."""
+    if isinstance(obj, (datetime, ObjectId)):
+        return str(obj)
+    raise TypeError(f"Tipo {type(obj)} não é serializável para JSON")
 
 # Rotas de login, registro e logout
 @app.route('/login', methods=['GET', 'POST'])
@@ -123,6 +133,40 @@ def home():
     if 'user_id' in session:
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
+
+# Função para exportar o banco de dados
+@app.route('/export_db', methods=['GET'])
+def export_db():
+    # Exportar usuários
+    usuarios = mongo.db.USERS.find()
+    campanhas = mongo.db.CAMPANHAS.find()
+    produtos = mongo.db.PRODUTOS.find()
+
+    # Criar um arquivo CSV ou JSON para exportar
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    # Escrever o cabeçalho do CSV
+    writer.writerow(['Coleção', 'Dados'])
+
+    # Exportar dados de cada coleção como JSON em uma linha, usando a função de serialização
+    for usuario in usuarios:
+        writer.writerow(['USERS', json.dumps(usuario, default=json_serial)])
+    for campanha in campanhas:
+        writer.writerow(['CAMPANHAS', json.dumps(campanha, default=json_serial)])
+    for produto in produtos:
+        writer.writerow(['PRODUTOS', json.dumps(produto, default=json_serial)])
+
+    # Ajustar o ponteiro do arquivo
+    output.seek(0)
+
+    # Enviar o arquivo CSV como resposta
+    return send_file(
+        io.BytesIO(output.getvalue().encode()),
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name='export_banco_dados.csv'
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)
