@@ -5,6 +5,11 @@
 {% block content %}
 <div class="container mt-5">
     <h1 class="mb-4">Resumo do Banco de Dados</h1>
+    <div class="row">
+        <div class="col-md-12 text-end mb-3">
+            <a href="{{ url_for('export_db') }}" class="btn btn-info">Exportar Banco de Dados</a>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-4">
