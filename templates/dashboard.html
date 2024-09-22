@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Resumo do Banco de Dados</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Usuários</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ total_usuarios }} Usuários Registrados</h5>
+                    <p class="card-text">Visualize e gerencie todos os usuários.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Campanhas</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ total_campanhas }} Campanhas Ativas</h5>
+                    <p class="card-text">Gerencie as campanhas de marketing ativas.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">Produtos</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ total_produtos }} Produtos Disponíveis</h5>
+                    <p class="card-text">Gerencie e edite os produtos cadastrados.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Compras</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ total_compras }} Compras Realizadas</h5>
+                    <p class="card-text">Visualize e gerencie as compras dos clientes.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Créditos</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ total_creditos }} Créditos Disponíveis</h5>
+                    <p class="card-text">Gerencie os créditos disponíveis para os usuários.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header">Notificações</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ total_notificacoes }} Notificações Enviadas</h5>
+                    <p class="card-text">Gerencie as notificações enviadas aos usuários.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
