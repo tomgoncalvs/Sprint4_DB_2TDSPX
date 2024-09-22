@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Categorias{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h2>Categorias</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCategoriaModal">Adicionar Categoria</button>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for categoria in categorias %}
+        <tr>
+            <td>{{ categoria.nome_categoria }}</td>
+            <td>{{ categoria.descricao }}</td>
+            <td>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoriaModal{{ categoria._id }}">Editar</button>
+                <a href="{{ url_for('delete_categorias', id=categoria._id) }}" class="btn btn-danger btn-sm">Deletar</a>
+            </td>
+        </tr>
+
+        <!-- Modal de editar categoria -->
+        <div class="modal fade" id="editCategoriaModal{{ categoria._id }}" tabindex="-1" aria-labelledby="editCategoriaModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="POST" action="{{ url_for('update_categorias', id=categoria._id) }}">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Editar Categoria</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="nome_categoria" class="form-label">Nome da Categoria</label>
+                                <input type="text" class="form-control" name="nome_categoria" value="{{ categoria.nome_categoria }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descricao" class="form-label">Descrição</label>
+                                <input type="text" class="form-control" name="descricao" value="{{ categoria.descricao }}" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal de criar categoria -->
+<div class="modal fade" id="createCategoriaModal" tabindex="-1" aria-labelledby="createCategoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('create_categorias') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createCategoriaModalLabel">Nova Categoria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nome_categoria" class="form-label">Nome da Categoria</label>
+                        <input type="text" class="form-control" name="nome_categoria" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <input type="text" class="form-control" name="descricao" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
